@@ -26,20 +26,6 @@ class Transaction extends Model
 
 
 
-    public function consumer()
-        {
-            return $this->belongsTo(Consumer::class, 'consumer_id');
-        }
-
-    public function collector()
-        {
-            return $this->belongsTo(Collector::class, 'collector_id');
-        }
-
-    public function supplier()
-        {
-            return $this->belongsTo(Supplier::class, 'supplier_id');
-        }
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -52,6 +38,20 @@ class Transaction extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function consumer()
+    {
+        return $this->belongsTo(Consumer::class);
+    }
+
+    public function collector()
+    {
+        return $this->belongsTo(Collector::class);
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

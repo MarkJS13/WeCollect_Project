@@ -25,10 +25,7 @@ class Consumer extends Model
     // protected $hidden = [];
 
 
-    public function transaction()
-    {
-        return $this->hasMany(Transaction::class);
-    }
+    
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -40,6 +37,11 @@ class Consumer extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+
+    public function transaction()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 
     /*
     |--------------------------------------------------------------------------

@@ -25,9 +25,6 @@ class Collector extends Model
     // protected $hidden = [];
 
 
-    public function transactions() {
-        return $this->hasMany(Transaction::class);
-    }
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -40,6 +37,10 @@ class Collector extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function transactions() {
+        return $this->hasMany(Transaction::class);
+    }
+    
     /*
     |--------------------------------------------------------------------------
     | SCOPES

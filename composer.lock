@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "41d0359c1e737efa5535918f2b07a7ba",
+    "content-hash": "72209d6a5e650bbaee0e7474f3535b0b",
     "packages": [
         {
             "name": "backpack/basset",
@@ -82,16 +82,16 @@
         },
         {
             "name": "backpack/crud",
-            "version": "6.2.0",
+            "version": "6.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Laravel-Backpack/CRUD.git",
-                "reference": "4cd8e5d909c77a4d7ce2bfbc7eac46490589ad20"
+                "reference": "4dc36a3f8020bca9061177336b4dd65b54795352"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Laravel-Backpack/CRUD/zipball/4cd8e5d909c77a4d7ce2bfbc7eac46490589ad20",
-                "reference": "4cd8e5d909c77a4d7ce2bfbc7eac46490589ad20",
+                "url": "https://api.github.com/repos/Laravel-Backpack/CRUD/zipball/4dc36a3f8020bca9061177336b4dd65b54795352",
+                "reference": "4dc36a3f8020bca9061177336b4dd65b54795352",
                 "shasum": ""
             },
             "require": {
@@ -171,9 +171,78 @@
             ],
             "support": {
                 "issues": "https://github.com/Laravel-Backpack/CRUD/issues",
-                "source": "https://github.com/Laravel-Backpack/CRUD/tree/6.2.0"
+                "source": "https://github.com/Laravel-Backpack/CRUD/tree/6.2.1"
             },
-            "time": "2023-08-31T10:03:14+00:00"
+            "time": "2023-09-19T13:43:18+00:00"
+        },
+        {
+            "name": "backpack/pro",
+            "version": "2.0.12",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:Laravel-Backpack/PRO.git",
+                "reference": "0394ab231eae4b0556985144c06d114984d02d36"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://repo.backpackforlaravel.com/dist/backpack/pro/backpack-pro-0394ab231eae4b0556985144c06d114984d02d36-zip-c17ec9.zip",
+                "reference": "0394ab231eae4b0556985144c06d114984d02d36",
+                "shasum": "cdbc6182bd17558210c516a9a0ed49dec6578bb7"
+            },
+            "require": {
+                "backpack/crud": "^6.0.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "~5|~6",
+                "phpunit/phpunit": "~9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Backpack\\Pro\\AddonServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Backpack\\Pro\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Backpack\\Pro\\Tests\\": "tests"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "vendor/bin/phpunit --testdox"
+                ]
+            },
+            "license": [
+                "Proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Cristian Tabacitu",
+                    "email": "cristian.tabacitu@backpackforlaravel.com",
+                    "homepage": "https://backpackforlaravel.com"
+                }
+            ],
+            "description": "Operations, Fields, Columns, Filters and Widgets for not-so-simple admin panels.",
+            "homepage": "https://github.com/digitallyhappy/backpack-pro",
+            "keywords": [
+                "Backpack",
+                "Backpack Addon",
+                "Backpack for Laravel",
+                "Laravel",
+                "Pro"
+            ],
+            "support": {
+                "source": "https://github.com/Laravel-Backpack/PRO/tree/2.0.12",
+                "issues": "https://github.com/Laravel-Backpack/PRO/issues"
+            },
+            "time": "2023-09-19T13:19:38+00:00"
         },
         {
             "name": "backpack/theme-tabler",

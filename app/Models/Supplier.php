@@ -21,29 +21,32 @@ class Supplier extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = ['name', 'products/services', 'status'];
+    protected $fillable = ['name', 'products_services', 'status'];
     // protected $hidden = [];
 
 
-    public static function getSupplierIdOptions()
-    {
-        return self::pluck('id')->toArray();
-    }
+    
 
-    public function transactions() {
-        return $this->hasMany(Transaction::class);
-    }
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
 
+    public static function getSupplierIdOptions()
+    {
+        return self::pluck('id')->toArray();
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+
+    public function transactions() {
+        return $this->hasMany(Transaction::class);
+    }
 
     /*
     |--------------------------------------------------------------------------

@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.1",
         "backpack/crud": "^6.2",
+        "backpack/pro": "^2.0",
         "backpack/theme-tabler": "^1.1",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
@@ -69,10 +70,10 @@
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
-    "repositories": {
-        "backpack": {
+    "repositories": [
+        {
             "type": "composer",
             "url": "https://repo.backpackforlaravel.com/"
         }
-    }
+    ]
 }

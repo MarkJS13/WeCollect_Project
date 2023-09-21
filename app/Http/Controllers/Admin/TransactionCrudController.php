@@ -9,6 +9,7 @@ use App\Models\Supplier;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
+
 /**
  * Class TransactionCrudController
  * @package App\Http\Controllers\Admin
@@ -65,7 +66,7 @@ class TransactionCrudController extends CrudController
     {
         CRUD::setValidation(TransactionRequest::class);
 
-        $this->crud->field('transaction_date')->type('date');
+        $this->crud->field('transaction_date')->type('date')->value(now());
         $this->crud->field('amount')->type('number');
         $this->crud->addField([
             'name' => 'supplier_id',
@@ -80,12 +81,12 @@ class TransactionCrudController extends CrudController
         $this->crud->addField([
             'name' => 'consumer_id',
             'label' => 'Choose a consumer',
-            'type' => 'select',
+            'type' => 'select2',
             'entity' => 'consumer', 
             'attribute' => 'name',
             'model' => 'App\Models\Consumer',
             'attributes' => ['id' => 'consumer_id'], 
-        ]);
+        ]);        
 
         $this->crud->addField([
             'name' => 'collector_id',
