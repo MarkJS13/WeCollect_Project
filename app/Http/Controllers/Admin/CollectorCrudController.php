@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\CollectorRequest;
+use App\Models\Collector;
+use App\Models\Transaction;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -42,15 +44,17 @@ class CollectorCrudController extends CrudController
         //CRUD::setFromDb(); // set columns from db columns.
 
         //CRUD::column('id')->type('my_custom_column');
-        $this->crud->column('images')->label('image')->type('image');
+        $this->crud->column('images')->label('Image')->type('image');
         $this->crud->column('name');
         $this->crud->column('area')->prefix('Around ')->suffix(' Vicinity');
-        $this->crud->column('bills')->label('cash on hand');
+        $this->crud->column('collector_level');
         
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
+        $this->crud->addColumn([
+            'name' => 'bills',
+            'label' => 'Cash on hand',
+            'type' => 'model_function',
+            'function_name' => 'getBillsAttribute',
+        ]);
     }
 
     /**
@@ -64,14 +68,25 @@ class CollectorCrudController extends CrudController
         $this->crud->setValidation(CollectorRequest::class);
         //CRUD::setFromDb(); // set fields from db columns.
 
-        $this->crud->field('images');
+        $this->crud->field('images')->label('Image');
         $this->crud->field('name');
         $this->crud->field('area');
-        $this->crud->field('bills')->type('number');
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+        $this->crud->field([
+            'name' => 'collector_level',
+            'label' => 'Collector Level',
+            'type' => 'select_from_array',
+            'options' => ['' => '-', 1 => '1', 2 => '2', 3 => '3', 4 => '4']
+        ]);
+
+        // $collector = new Collector();
+        // $this->crud->addField([
+        //     'name' => 'bills',
+        //     'label' => 'Cash on hand',
+        //     'type' => 'text', 
+        //     'value' => $collector->getBillsAttribute(),
+        //     'attributes' => ['readonly' => 'readonly'],
+        // ]);
+
     }
 
     /**

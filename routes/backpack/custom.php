@@ -20,4 +20,7 @@ Route::group([
     Route::crud('supplier', 'SupplierCrudController');
     Route::crud('consumer', 'ConsumerCrudController');
     Route::crud('transaction', 'TransactionCrudController');
+    Route::get('charts/monthly-chart', 'Charts\MonthlyChartController@response')->name('charts.monthly-chart.index');
+    Route::get('charts/top-suppliers', 'Charts\TopSuppliersChartController@response')->name('charts.top-suppliers.index');
+    Route::crud('history', 'HistoryCrudController');
 }); // this should be the absolute last line of this file

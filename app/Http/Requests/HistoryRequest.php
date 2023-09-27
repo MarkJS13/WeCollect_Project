@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CollectorRequest extends FormRequest
+class HistoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,11 +25,7 @@ class CollectorRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255',
-            'area' => 'required|max:255',
-            'images' => 'required|max:255',
-            'collector_level' => 'required',
-            // 'bills' => 'required'
+            // 'name' => 'required|min:5|max:255'
         ];
     }
 

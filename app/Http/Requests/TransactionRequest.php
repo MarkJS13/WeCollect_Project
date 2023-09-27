@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Collector;
+use App\Models\Supplier;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TransactionRequest extends FormRequest
@@ -29,8 +31,33 @@ class TransactionRequest extends FormRequest
             'consumer_id' => 'required',
             'collector_id' => 'required',
             'supplier_id' => 'required',
-            'amount' => 'required',
-            'status' => 'required'
+            'status' => 'required',
+            'amount' => [
+                'required',
+                'numeric',
+                function ($attribute, $value, $fail) {
+                    $collectorId = $this->input('collector_id');
+                    $collector = Collector::find($collectorId);
+    
+                    if (!$collector) {
+                        $fail('Selected collector is not valid.');
+                        return;
+                    }
+
+                    $limits = [
+                        1 => 5000,
+                        2 => 10000,
+                        3 => 15000,
+                        4 => 1000000000000000
+                    ];
+    
+                    // Check if the amount exceeds the collector's limit
+                    if ($collector->collector_level > 0 && $value > $limits[$collector->collector_level]) {
+                        $message = "Transaction amount exceeds the collector's limit for the selected level. Level {$collector->collector_level} collector can only transact {$limits[$collector->collector_level]} below";
+                    $fail($message);
+                    }
+                },
+            ],
         ];
     }
 
@@ -42,7 +69,7 @@ class TransactionRequest extends FormRequest
     public function attributes()
     {
         return [
-            //
+            
         ];
     }
 

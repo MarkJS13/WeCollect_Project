@@ -25,9 +25,9 @@ class SupplierRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:5|max:255',
-            'products/services' => 'required|min:5|max:255',
-            'status' => 'required|min:5|max:255'
+            'name' => 'required|max:255',
+            'products/services' => 'required|max:255',
+            'status' => 'required|max:255'
         ];
     }
 

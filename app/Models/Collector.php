@@ -21,7 +21,7 @@ class Collector extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = ['name', 'area', 'images', 'bills'];
+    protected $fillable = ['name', 'area', 'images', 'bills', 'collector_level'];
     // protected $hidden = [];
 
 
@@ -30,6 +30,16 @@ class Collector extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    public function getBillsAttribute()
+    {
+        return $this->transactions->sum('amount');
+    }
+
+    public function updateBillsColumn()
+    {
+        $this->update(['bills' => $this->getBillsAttribute()]);
+    }
 
     /*
     |--------------------------------------------------------------------------

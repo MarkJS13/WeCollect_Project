@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\TransactionMade;
 use App\Http\Requests\TransactionRequest;
-use App\Models\Consumer;
-use App\Models\Collector;
 use App\Models\Supplier;
+use App\Models\Transaction;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 /**
  * Class TransactionCrudController
@@ -33,7 +35,6 @@ class TransactionCrudController extends CrudController
         $this->crud->setModel(\App\Models\Transaction::class);
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/transaction');
         $this->crud->setEntityNameStrings('transaction', 'transactions');
-
     }
 
     /**
@@ -50,10 +51,6 @@ class TransactionCrudController extends CrudController
         $this->crud->column('collector_id')->label('Collector Name');
         $this->crud->column('amount');
         $this->crud->column('status');
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
     }
 
     /**
@@ -67,36 +64,39 @@ class TransactionCrudController extends CrudController
         CRUD::setValidation(TransactionRequest::class);
 
         $this->crud->field('transaction_date')->type('date')->value(now());
-        $this->crud->field('amount')->type('number');
-        $this->crud->addField([
-            'name' => 'supplier_id',
-            'label' => 'Choose a supplier',
-            'type' => 'select',
-            'entity' => 'supplier', // The entity name for the CRUD controller
-            'attribute' => 'name', // The attribute to display in the dropdown (supplier name)
-            'model' => 'App\Models\Supplier', // The fully qualified namespace of the Supplier model
-            'attributes' => ['id' => 'supplier_id'], // The attribute to store in the database (supplier ID)
-        ]);
-
         $this->crud->addField([
             'name' => 'consumer_id',
             'label' => 'Choose a consumer',
             'type' => 'select2',
-            'entity' => 'consumer', 
+            'entity' => 'consumer',
             'attribute' => 'name',
             'model' => 'App\Models\Consumer',
-            'attributes' => ['id' => 'consumer_id'], 
-        ]);        
+            'attributes' => ['id' => 'consumer_id'],
+        ]);
 
+        $this->crud->addField([
+            'name' => 'supplier_id',
+            'label' => 'Choose a supplier',
+            'type' => 'select2_from_array', 
+            'entity' => 'supplier',
+            'options' => Supplier::getActiveSuppliers(), // options sa dropdown
+            'model' => 'App\Models\Supplier',
+            'attributes' => ['id' => 'supplier_id'],
+        ]);
+
+        
         $this->crud->addField([
             'name' => 'collector_id',
             'label' => 'Choose a collector',
-            'type' => 'select',
-            'entity' => 'collector', 
-            'attribute' => 'name', 
-            'model' => 'App\Models\Collector', 
-            'attributes' => ['id' => 'collector_id'], 
+            'type' => 'select2',
+            'entity' => 'collector',
+            'attribute' => 'name',
+            'model' => 'App\Models\Collector',
+            'attributes' => ['id' => 'collector_id'],
         ]);
+        
+
+        $this->crud->field('amount')->type('number')->min(0)->attributes(['min' => 0]);
 
         $this->crud->field([
             'name' => 'status',
@@ -105,27 +105,26 @@ class TransactionCrudController extends CrudController
             'options' => ['' => '-', 'Completed' => 'Completed', 'Pending' => 'Pending', 'Failed' => 'Failed'],
         ]);
 
-        // $this->crud->field([
-        //     'name' => 'consumer_name',
-        //     'label' => 'Choose a consumer',
-        //     'type' => 'select_from_array',
-        //     'options' => Consumer::getConsumerOptions(), 
-        // ]);
-
-        // $this->crud->field([
-        //     'name' => 'collector_name',
-        //     'label' => 'Choose a collector',
-        //     'type' => 'select_from_array',
-        //     'options' => Collector::getCollectorsOptions(), 
-        // ]);        
         
+        $this->crud->addField([
+            'name' => 'user_id',
+            'label' => 'User ID', 
+            'type' => 'hidden',
+            'value' => backpack_auth()->user()->id,
+        ]);
 
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+    }
 
+    public function store(TransactionRequest $request)
+    {
+        $transaction = new Transaction(); 
+        $transaction->fill($request->all());
+        $transaction->save(); 
 
+        
+        event(new TransactionMade($transaction));
+
+        return Redirect::to('/admin/transaction');
     }
 
     /**
@@ -138,4 +137,7 @@ class TransactionCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
+
+    
+
 }

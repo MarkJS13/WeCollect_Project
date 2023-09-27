@@ -21,7 +21,7 @@ class Transaction extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = ['transaction_date', 'amount', 'status', 'consumer_id', 'collector_id', 'supplier_id'];
+    protected $fillable = ['transaction_date', 'amount', 'status', 'consumer_id', 'collector_id', 'supplier_id', 'user_id'];
     // protected $hidden = [];
 
 
@@ -31,6 +31,19 @@ class Transaction extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($transaction) {
+            $transaction->collector->updateBillsColumn();
+        });
+
+        static::updated(function ($transaction) {
+            $transaction->collector->updateBillsColumn();
+        });
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +65,15 @@ class Transaction extends Model
     {
         return $this->belongsTo(Supplier::class);
     }
-    /*
+
+
+    /* user logs */
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    /*    
     |--------------------------------------------------------------------------
     | SCOPES
     |--------------------------------------------------------------------------

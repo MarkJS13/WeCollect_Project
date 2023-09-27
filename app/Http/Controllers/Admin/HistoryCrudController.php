@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\SupplierRequest;
+use App\Http\Requests\HistoryRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Carbon\Carbon;
 
 /**
- * Class SupplierCrudController
+ * Class HistoryCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class SupplierCrudController extends CrudController
+class HistoryCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    // use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    // use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
@@ -26,9 +27,9 @@ class SupplierCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Supplier::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/supplier');
-        CRUD::setEntityNameStrings('supplier', 'suppliers');
+        CRUD::setModel(\App\Models\History::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/history');
+        CRUD::setEntityNameStrings('history', 'histories');
     }
 
     /**
@@ -39,11 +40,16 @@ class SupplierCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
+        //CRUD::setFromDb(); // set columns from db columns.
 
-        CRUD::column('name');
-        CRUD::column('products/services');
-        CRUD::column('status');
+        $this->crud->column('created_at')->type('date')->label('date');
+
+        $this->crud->column([
+            'name' => 'history_overview',
+            'label' => 'History Overview',
+            'type' => 'text',
+            'limit' => 100,
+        ]);
         /**
          * Columns can be defined using the fluent syntax:
          * - CRUD::column('price')->type('number');
@@ -58,18 +64,13 @@ class SupplierCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        $this->crud->setValidation(SupplierRequest::class);
-        //CRUD::setFromDb(); // set fields from db columns.
+        CRUD::setValidation(HistoryRequest::class);
+       // CRUD::setFromDb(); // set fields from db columns.
 
-        $this->crud->field('name');
-        $this->crud->field('products/services');
-        
-        $this->crud->field([
-            'name' => 'status',
-            'label' => 'Status',
-            'type' => 'select_from_array',
-            'options' => ['' => '-', 'Active' => 'Active', 'Inactive' => 'Inactive']
-        ]);
+        /**
+         * Fields can be defined using the fluent syntax:
+         * - CRUD::field('price')->type('number');
+         */
     }
 
     /**
@@ -80,6 +81,6 @@ class SupplierCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();
+        //$this->setupCreateOperation();
     }
 }

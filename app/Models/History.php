@@ -6,7 +6,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Supplier extends Model
+class History extends Model
 {
     use CrudTrait;
     use HasFactory;
@@ -17,15 +17,12 @@ class Supplier extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'suppliers';
+    protected $table = 'histories';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = ['name', 'products/services', 'status'];
+    protected $fillable = ['user_id', 'history_overview'];
     // protected $hidden = [];
-
-
-    
 
     /*
     |--------------------------------------------------------------------------
@@ -33,27 +30,11 @@ class Supplier extends Model
     |--------------------------------------------------------------------------
     */
 
-    public static function getSupplierIdOptions()
-    {
-        return self::pluck('id')->toArray();
-    }
-
-
-    public static function getActiveSuppliers() {
-        $activeSuppliers = self::where('status', 'Active')->pluck('name', 'id')->all();
-        return $activeSuppliers;
-    }
-
-    
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
-    public function transactions() {
-        return $this->hasMany(Transaction::class);
-    }
 
     /*
     |--------------------------------------------------------------------------
